@@ -1,0 +1,109 @@
+﻿@using GreenPOS.Models
+@model ContactViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Bootstrap4/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Contacts</a></li>
+                                <li class="breadcrumb-item active">Manage User</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Manage User</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    @using (Html.BeginForm("SaveContactAsync", "Contact", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                <div class="row mb-2">
+                    <div class="col-sm-12 text-sm-right">
+                        <button class="btn btn-success mb-2 mr-1" id="btnSaveContact" aria-disabled="false" tabindex="0">Save</button>
+                        @Html.ActionLink("Close", "Index", "Contact", null, new { @class = "btn btn-warning mb-2 mr-1", @placeholder = "FirstName", id = "FirstName" })
+                    </div>
+                    @Html.HiddenFor(model => model.Id)
+                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">First Name</label>
+                                        <div class="col-sm-9 float-right">
+                                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "FirstName" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">Last Name</label>
+                                        <div class="col-sm-9 float-right">
+                                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">Email</label>
+                                        <div class="col-sm-9 float-right">
+                                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">Phone</label>
+                                        <div class="col-sm-9 float-right">
+                                            @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @placeholder = "Phone" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <label class="col-sm-12 control-label heading">Address Information</label>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">Street 1</label>
+                                        <div class="col-sm-9 float-right">
+                                            @Html.TextBoxFor(model => model.MailingStreet, new { @class = "form-control", @placeholder = "Street 1" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">Street 2</label>
+                                        <div class="col-sm-9 float-right">
+                                            @Html.TextBoxFor(model => model.City, new { @class = "form-control", @placeholder = "Street 2" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">Suburb</label>
+                                        <div class="col-sm-9 float-right">
+                                            @Html.TextBoxFor(model => model.MailingState, new { @class = "form-control", @placeholder = "Suburb" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">Postcode</label>
+                                        <div class="col-sm-9 float-right">
+                                            @Html.TextBoxFor(model => model.MailingZip, new { @class = "form-control", @placeholder = "Postcode" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="col-sm-3 control-label">State</label>
+                                        <div class="col-sm-9 float-right ">
+                                            @Html.TextBoxFor(model => model.State, new { @class = "form-control", @placeholder = "State" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                                @await Html.PartialAsync("_addNotePartial", Model)}
+                    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+                    @*<script src="~/js/Contact/Contact.js"></script>*@
+                </div>
+                <!-- DataTales Example -->
+            </div>
+        </div>
+    </div>
+</div>

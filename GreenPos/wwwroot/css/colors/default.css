@@ -1,0 +1,310 @@
+@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900);
+/*Theme Colors*/
+/*bootstrap Color*/
+/*Normal Color*/
+/*Border radius*/
+/*Preloader*/
+.preloader {
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  position: fixed;
+  z-index: 99999;
+  background: #fff;
+}
+.preloader .cssload-speeding-wheel {
+  position: absolute;
+  top: calc(50% - 3.5px);
+  left: calc(50% - 3.5px);
+}
+/*Just change your choise color here its theme Colors*/
+body {
+  background: #fff;
+}
+.top-left-part {
+      background: #000;
+}
+.top-left-part .dark-logo {
+  display: none;
+}
+.dollar {
+    font-weight: 700;
+}
+.card-header:first-child {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+.card-header:first-child {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+.pb-3, .py-3 {
+    padding-bottom: 1rem !important;
+}
+.pt-3, .py-3 {
+    padding-top: 1rem !important;
+}
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+.mb-4, .my-4 {
+    margin-bottom: 1.5rem !important;
+}
+.bg-secondary {
+    background-color: #aa66cc !important;
+}
+h4 {
+    line-height: 22px;
+    font-size: 18px;
+    font-weight: 700;
+}
+.float-right {
+    float: right !important;
+}
+.table-title {
+        padding-bottom: 10px;
+        margin: 0 0 10px;
+    }
+    .table-title h2 {
+        margin: 6px 0 0;
+        font-size: 22px;
+    }
+    .table-title .add-new {
+        float: right;
+    height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;
+    min-width: 100px;
+    border-radius: 50px;
+    line-height: 13px;
+    }
+  .table-title .add-new i {
+    margin-right: 4px;
+  }
+    table.table {
+        table-layout: fixed;
+    }
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+    }
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    table.table th:last-child {
+        width: 100px;
+    }
+    table.table td a {
+    cursor: pointer;
+        display: inline-block;
+        margin: 0 5px;
+    min-width: 24px;
+    }    
+  table.table td a.add {
+        color: #27C46B;
+    }
+    table.table td a.edit {
+        color: #FFC107;
+    }
+    table.table td a.delete {
+        color: #E34724;
+    }
+    table.table td i {
+        font-size: 19px;
+    }
+  table.table td a.add i {
+        font-size: 24px;
+      margin-right: -1px;
+        position: relative;
+        top: 3px;
+    }    
+    table.table .form-control {
+        height: 32px;
+        line-height: 32px;
+        box-shadow: none;
+        border-radius: 2px;
+    }
+  table.table .form-control.error {
+    border-color: #f50000;
+  }
+  table.table td .add {
+    display: none;
+  }
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+.card-header.py-3 h6 {
+    font-size: 1.125rem;
+    font-family: Open Sans, sans-serif;
+    font-weight: 700;
+    line-height: 1.5rem;
+}
+img.light-logo.logogreen {
+    height: 44px;
+    width:260px;
+}
+.nav>li {
+    position: relative;
+    display: block;
+    border-top: 1px solid #f0f0f0;
+}
+i.fa.fa-angle-down.admint {
+    float: right;
+}
+ul.sub-menu li {
+    line-height: 36px;
+    list-style-type: none;
+    margin: 0 0 0 15px;
+}
+.top-left-part .light-logo {
+  display: inline-block;
+}
+/*Top Header Part*/
+.logo i {
+  color: #ffffff;
+}
+.navbar-header {
+  background: #2f323e;
+}
+.navbar-top-links > li > a {
+  color: #ffffff;
+}
+.sidebar .sidebar-head {
+  background: #ffffff;
+}
+.sidebar .sidebar-head h3 {
+  color: #686868;
+}
+/*Right panel*/
+.right-sidebar .rpanel-title {
+  background: #41b3f9;
+}
+/*Bread Crumb*/
+.bg-title .breadcrumb .active {
+  color: #41b3f9;
+}
+table.table.table-bordered {
+    background: #fff;
+}
+/*Sidebar*/
+.sidebar {
+  background: #fff;
+  box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
+}
+.sidebar .label-custom {
+  background: #01c0c8;
+}
+#side-menu li a {
+  color: #54667a;
+}
+#side-menu li a {
+  color: #54667a;
+  border-left: 0px solid #fff;
+}
+#side-menu > li > a {
+  border-left: 3px solid transperant;
+}
+#side-menu > li > a:hover,
+#side-menu > li > a:focus {
+  background: rgba(0, 0, 0, 0.07);
+}
+#side-menu > li > a.active {
+  background: transperant;
+  color: #54667a;
+  border-left: 3px solid #41b3f9;
+  font-weight: 500;
+}
+#side-menu ul > li > a:hover {
+  color: #41b3f9;
+}
+#side-menu ul > li > a.active {
+  color: #54667a;
+  font-weight: 500;
+}
+.user-profile .user-pro-body .u-dropdown {
+  color: #54667a;
+}
+/*themecolor*/
+.bg-theme {
+  background-color: #707cd2 !important;
+}
+.bg-theme-dark {
+  background-color: #41b3f9 !important;
+}
+/*Button*/
+.btn-custom {
+  background: #41b3f9;
+  border: 1px solid #41b3f9;
+  color: #ffffff;
+}
+.btn-custom:hover {
+  background: #41b3f9;
+  opacity: 0.8;
+  color: #ffffff;
+  border: 1px solid #41b3f9;
+}
+/*Custom tab*/
+.customtab li.active a,
+.customtab li.active a:hover,
+.customtab li.active a:focus {
+  border-bottom: 2px solid #41b3f9;
+  color: #41b3f9;
+}
+.tabs-vertical li.active a,
+.tabs-vertical li.active a:hover,
+.tabs-vertical li.active a:focus {
+  background: #41b3f9;
+  border-right: 2px solid #41b3f9;
+}
+/*Nav-pills*/
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover {
+  background: #41b3f9;
+  color: #ffffff;
+}
+/*Extra css*/
+.bg-theme {
+  background-color: #41b3f9 !important;
+}
+.panel-themecolor,
+.panel-theme {
+  border-color: #41b3f9;
+}
+.panel-themecolor .panel-heading,
+.panel-theme .panel-heading {
+  border-color: #41b3f9;
+  color: white;
+  background-color: #41b3f9;
+}
+.panel-themecolor .panel-heading a,
+.panel-theme .panel-heading a {
+  color: #ffffff;
+}
+.panel-themecolor .panel-heading a:hover,
+.panel-theme .panel-heading a:hover {
+  color: rgba(255, 255, 255, 0.5);
+}
+.panel-themecolor a,
+.panel-theme a {
+  color: #41b3f9;
+}
+.panel-themecolor a:hover,
+.panel-theme a:hover {
+  color: #0791e6;
+}

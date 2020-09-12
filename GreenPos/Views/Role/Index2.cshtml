@@ -1,0 +1,110 @@
+﻿@using GreenPOS.Models
+@*@model IEnumerable<UserViewModel>*@
+@model RoleViewModel
+
+<link href="~/Bootstrap4/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="col-sm-12" style="float: left">
+    <h2 style="display: inline-flex">Manage Roles</h2>
+    <button class="btn btn-success" style="float:right" aria-disabled="false" data-toggle="modal" data-target="#myModal" tabindex="0">Create User</button>
+</div>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Notes</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width="2%">Action</th>
+                        <th width="20%">Name</th>
+                        <th width="78%">Permission</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th width="2%">Action</th>
+                        <th width="20%">Name</th>
+                        <th width="78%">Permission</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (RoleViewModel item in ViewBag.roles)
+                    {
+                        <tr>
+                            <td width="2%">
+
+                                <a class="editUser" style ="cursor:pointer" title="Edit" aria-disabled="false" data-toggle="modal" data-target="#myModal" tabindex="0" onclick="EditRole('@item.Id')"><i class="fas fa-edit" style="color:#FFC107; font-size: 0.9rem;"></i></a>
+                                <a class="delete" style ="cursor:pointer" title="Delete"><i class="fas fa-trash" style="color:#E34724; font-size: 0.9rem;" onclick="DeleteRole('@item.Id')"></i></a>
+                            </td>
+                            <td width="20%">@item.Name</td>
+                            <td width="78%">@item.PermissionNames</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="display:block">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="font-size: 1.3rem; font-weight:700; color:black; display:block">Create User</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("SaveUserAsync", "Role", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">Role Name</label>
+                        <div class="col-sm-9" style="float:right">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "UserName", id = "UserName", @required = "required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">Role</label>
+                        <div class="col-sm-9" style="float:right">
+                            <select name="PermissionRoleIds" id="PermissionRoleIds" multiple="multiple" class="form-control" required>
+                            </select>
+                            @Html.HiddenFor(a => a.PermissionIds)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="offset-sm-3 col-sm-3">
+                            <button class="btn btn-info" id="btnSave" type="submit">Save</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-warning" type="button" data-dismiss="modal" tabindex="0">Cancel</button>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background: #e4e7ea;border: 0px;color: #000;" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/js/Role/Role.js"></script>
+
+

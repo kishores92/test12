@@ -1,0 +1,38 @@
+﻿.modal {
+    text-align: center;
+    padding: 0 !important;
+}
+
+    .modal:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -4px;
+    }
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+.modal-content {
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .1)
+}
+
+.form-group, .form-horizontal .form-group {
+    margin-bottom: 25px;
+}
+
+.form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.form-horizontal .control-label {
+    padding-top: 7px;
+    margin-bottom: 0;
+    text-align: start;
+    font-size: 12px;
+    font-weight: normal;
+}

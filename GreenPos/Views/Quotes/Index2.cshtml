@@ -1,0 +1,67 @@
+﻿@using GreenPOS.Models
+
+@model QuotesViewModel
+
+<style>
+    table.table td a.editContact {
+        color: #FFC107
+    }
+</style>
+@{
+    ViewData["Title"] = "Quotes";
+}
+
+<div class="row">
+    <div class="col-md-12 maininner">
+        <div class="white-box">
+            <div class="admin-box col-sm-12">
+                <h2>
+                    <input type="text" placeholder="Search..." class="form-control searchbox"> <a href="" class="active serchicon">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </h2>
+                <a asp-action="CreateQuote"><button class="appearance-filled size-medium status-success shape-rectangle transitions">Create</button></a>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th width="5%">Action</th>
+                        <th width="5%">Job Number</th>
+                        <th width="15%">Customer Name</th>
+                        <th width="10%">Email</th>
+                        <th width="10%">Phone</th>
+                        <th width="50%">Project Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (QuotesViewModel item in ViewBag.quotes)
+                    {
+                    <tr>
+                        <td>
+                            <a class="editContact" title="Edit" data-toggle="tooltip" href="/Quotes/GetQuotesAsync/@item.Id"><i class="material-icons">&#xE254;</i></a>
+                            <a onclick="return confirm('are you sure you want to delete?');" href="/Quotes/DeleteQuoteAsync/@item.Id" title="Delete" data-toggle="tooltip"><i class="material-icons" style="color:red">&#xE872;</i></a>
+                        </td>
+                        <td width="5%">@item.JobNumber</td>
+                        <td width="5%">@item.Name</td>
+                        <td width="15%">@item.CustomerEmail</td>
+                        <td width="10%">@item.CustomerContact</td>
+                        <td width="50%">@item.CustomerProjectAddress</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="paginationss">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+

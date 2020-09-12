@@ -1,0 +1,355 @@
+﻿@model QuoteViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //        $('.quoteSelect').change(function(){
+        //    $(this).is(':checked') ? $(this).siblings('.quoteSelect').prop('disabled',true) : "";
+        //});
+
+        $('.quoteSelect').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelect').attr('disabled', true);
+                $(this).attr('disabled', false);
+            }
+            else {
+                $('.quoteSelect').attr('disabled', false);
+            }
+
+        });
+
+        $('.quoteSelectPackage').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelectPackage').attr('disabled', true);
+                $(this).attr('disabled', false);
+            }
+            else {
+                $('.quoteSelectPackage').attr('disabled', false);
+            }
+
+        });
+           $('.quoteSelectInclusion').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelectInclusion').attr('disabled', true);
+                $(this).attr('disabled', false);
+            }
+            else {
+                $('.quoteSelectInclusion').attr('disabled', false);
+            }
+
+           });
+          $('.quoteSelectDesign').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelectDesign').attr('disabled', true);
+                $(this).attr('disabled', false);
+            }
+            else {
+                $('.quoteSelectDesign').attr('disabled', false);
+            }
+
+          });
+          $('.quoteSelectPromotion').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelectPromotion').attr('disabled', true);
+                $(this).attr('disabled', false);
+            }
+            else {
+                $('.quoteSelectPromotion').attr('disabled', false);
+            }
+
+        });
+    });
+</script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+<div class="col-md-12 maininner">
+    <div class="white-box">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Overview</a></li>
+            <li><a data-toggle="tab" href="#menu1">Home Designs</a></li>
+            <li><a data-toggle="tab" href="#menu2">Facade</a></li>
+            <li><a data-toggle="tab" href="#menu3">Inclusions</a></li>
+            <li><a data-toggle="tab" href="#menu4">Packages</a></li>
+            <li><a data-toggle="tab" href="#menu5">Promotions</a></li>            
+            <li><a data-toggle="tab" href="#menu6">Generate and Send</a></li>
+        </ul>
+        <div class="tab-content" style="height:1720px">
+            <div id="home" class="tab-pane fade in active">
+                <div class="col-sm-12">
+                    <div class="form-group row floatbpox">
+                        <button class="status-warning" aria-disabled="false" tabindex="0">Cancel</button>
+                        <button class=" status-info" aria-disabled="false" data-toggle="modal" data-target="#myModal" tabindex="0">Send Email</button>
+                        @*<button class="appearance-filled size-medium status-success shape-rectangle transitions" aria-disabled="false" data-toggle="modal" data-target="#myModal" tabindex="0">Send Email</button>*@
+                        <button _ngcontent-xkb-c18="" nbbutton="" status="success" _nghost-xkb-c16="" ng-reflect-status="success" class="appearance-filled size-medium status-success shape-rectangle transitions" aria-disabled="false" tabindex="0">Save</button>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Customer</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="" type="text" value="" placeholder="Customer Name">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Address</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="" type="text" value="" placeholder="Address">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">
+                                Contact
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="" type="text" value="" placeholder="Customer Contact">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Customer Email</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="" type="text" value="" placeholder="Customer Email">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Total Price</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="" type="text" value="" placeholder="Total Price">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">FloorPlan</label>
+                            <div class="col-sm-9">
+                                <select name="cars" class="form-control">
+                                    <option selected>Select</option>
+                                    <option value="volvo">FloorPlan </option>
+                                    <option value="fiat"> FloorPlan1</option>
+                                    <option value="fiat"> FloorPlan2</option>
+                                    <option value="fiat"> FloorPlan3</option>
+                                    <option value="fiat"> FloorPlan4</option>
+                                    <option value="fiat"> FloorPlan5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Status</label>
+                            <div class="col-sm-9">
+                                <select name="cars" class="form-control">
+                                    <option selected>Select</option>
+                                    <option value="volvo">Started </option>
+                                    <option value="fiat"> In Progress</option>
+                                    <option value="fiat"> Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Facade</label>
+                            <div class="col-sm-9">
+                                <select name="cars" class="form-control">
+                                    <option selected>Select</option>
+                                    <option value="volvo">Facade </option>
+                                    <option value="fiat"> Facade1</option>
+                                    <option value="fiat"> Facade2</option>
+                                    <option value="fiat"> Facade3</option>
+                                    <option value="fiat"> Facade4</option>
+                                    <option value="fiat"> Facade5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Supervisor</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="" type="text" value="" placeholder="Supervisor">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Supervisor Contact</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="" type="text" value="" placeholder="Supervisor Contact">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Notes</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <h3>Please select your design</h3>
+                @{
+                    while (Model.Designs.Any())
+                    {
+                        <div class="card-deck">
+                            @foreach (var item in Model.Designs.Take(3))
+                            {
+                                //if (item.CourseID == Model.CourseID)
+                                //{
+                                //    selectedRow = "table-success";kjb
+                                //}
+                                <div class="card" style=" width: 323px;">
+                                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 323px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="card-text"><small class="text-muted">Cost:@item.Cost AUD </small></p>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" class="quoteSelectDesign" id="@item.Name" style="transform: scale(1.5);margin: 10px;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        Model.Designs.RemoveRange(0, Model.Designs.Count < 3 ? Model.Designs.Count : 3);
+                    }
+                }
+
+            </div>
+
+            <div id="menu2" class="tab-pane fade">
+
+                <h3>Please select your facade</h3>
+
+                @{
+                    while (Model.Facades.Any())
+                    {
+                        <div class="card-deck">
+                            @foreach (var item in Model.Facades.Take(3))
+                            {
+                                //if (item.CourseID == Model.CourseID)
+                                //{
+                                //    selectedRow = "table-success";kjb
+                                //}
+                                <div class="card" style=" width: 323px;">
+                                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 323px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="card-text"><small class="text-muted">Cost:@item.Cost AUD </small></p>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" class="quoteSelectPackage" id="@item.Name" style="transform: scale(1.5);margin: 10px;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        Model.Facades.RemoveRange(0, Model.Facades.Count < 3 ? Model.Facades.Count : 3);
+                    }
+                }
+
+            </div>
+
+            <div id="menu3" class="tab-pane fade">
+
+                <h3>Please select your Inclusions</h3>
+
+                @{
+                    while (Model.Inclusions.Any())
+                    {
+                        <div class="card-deck">
+                            @foreach (var item in Model.Inclusions.Take(3))
+                            {
+                                //if (item.CourseID == Model.CourseID)
+                                //{
+                                //    selectedRow = "table-success";kjb
+                                //}
+                                <div class="card" style=" width: 323px;">
+                                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 323px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="card-text"><small class="text-muted">Cost:@item.Cost AUD </small></p>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" class="quoteSelectInclusion" id="@item.Name" style="transform: scale(1.5);margin: 10px;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        Model.Inclusions.RemoveRange(0, Model.Inclusions.Count < 3 ? Model.Inclusions.Count : 3);
+                    }
+                }
+
+            </div>
+
+            <div id="menu4" class="tab-pane fade">
+                <h3>Please select your package</h3>
+                @{
+                    while (Model.Packages.Any())
+                    {
+                        <div class="card-deck">
+                            @foreach (var item in Model.Packages.Take(3))
+                            {
+                                //if (item.CourseID == Model.CourseID)
+                                //{
+                                //    selectedRow = "table-success";kjb
+                                //}
+                                <div class="card" style=" width: 323px;">
+                                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 323px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="card-text"><small class="text-muted">Cost:@item.Cost AUD </small></p>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" class="quoteSelect" id="@item.Name" style="transform: scale(1.5);margin: 10px;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        Model.Packages.RemoveRange(0, Model.Packages.Count < 3 ? Model.Packages.Count : 3);
+                    }
+                }
+            </div>
+
+            <div id="menu5" class="tab-pane fade">
+                <h3>Please select the promotion</h3>
+                @{
+                    while (Model.Promotions.Any())
+                    {
+                        <div class="card-deck">
+                            @foreach (var item in Model.Promotions.Take(3))
+                            {
+                                //if (item.CourseID == Model.CourseID)
+                                //{
+                                //    selectedRow = "table-success";kjb
+                                //}
+                                <div class="card" style=" width: 323px;">
+                                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 323px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="card-text"><small class="text-muted">Cost:@item.Cost AUD </small></p>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" class="quoteSelectPromotion" id="@item.Name" style="transform: scale(1.5);margin: 10px;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        Model.Promotions.RemoveRange(0, Model.Promotions.Count < 3 ? Model.Promotions.Count : 3);
+                    }
+                }
+            </div>
+
+            <div id="menu6" class="tab-pane fade">
+                <div class="modal-body">
+                    <form asp-action="SendEnquiryEmail" asp-controller="Quote"
+                          data-ajax="true"
+                          data-ajax-method="POST"
+                          data-ajax-mode="replace"
+                          data-ajax-update="#ajaxresult">
+
+                        <div id="ajaxresult">
+                            @await Html.PartialAsync("_quoteEmailPartial", new EmailViewModel { Name = Model.Name, FileNameOfAttachment = "test" })
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+</div>
+    </div>
+
+

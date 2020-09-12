@@ -1,0 +1,133 @@
+﻿@using GreenPOS.Models
+@model UserViewModel
+
+
+<link href="~/Bootstrap4/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+@{ ViewData["Title"] = "Manager Users"; }
+
+
+<div class="col-sm-12" style="float: left">
+    <h2 style="display: inline-flex">Manage User</h2>
+    <button class="btn btn-success" style="float:right" aria-disabled="false" data-toggle="modal" data-target="#myModal" tabindex="0">Create User</button>
+
+</div>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Action</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (UserViewModel item in ViewBag.users)
+                    {
+        <tr>
+            <td>
+                <a class="editUser" style="cursor: pointer " title="Edit" aria-disabled="false" data-toggle="modal" data-target="#myModal" tabindex="0" onclick="EdUser('@item.Id')"><i class="fas fa-edit " style="color:#FFC107; font-size: 0.9rem;"></i></a>
+                <a class="delete" title="Delete" style="cursor: pointer" onclick="DelUser('@item.Id')"><i class="fas fa-trash" style="color:#E34724; font-size: 0.9rem;"></i></a>
+            </td>
+            <td>@item.UserName</td>
+            <td>@item.Email</td>
+            <td>@item.RoleName</td>
+            @*<td>@item.CompanyName</td>*@
+            @*<td>No</td>*@
+        </tr>}
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="display:block">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="font-size: 1.3rem; font-weight:700; color:black; display:block">Create User</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("SaveUserAsync", "User", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+    @Html.HiddenFor(model => model.Id)
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">User Name</label>
+                        <div class="col-sm-9" style="float:right">
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "UserName", id = "UserName", @required = "required" })
+                        </div>
+                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Email</label>
+                                        <div class="col-sm-9" style="float:right">
+                                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", id = "Email", @required = "required" })
+                                        </div>
+                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">Role</label>
+                                                        <div class="col-sm-9" style="float:right">
+                                                            <select name="RoleId" id="RoleId" class="form-control" required>
+                                                                <option id="0" selected="selected" value="0">Select</option>
+                                                                <option id="1" value="1">Super User</option>
+                                                                <option id="2" value="2">Sales</option>
+                                                                <option id="3" value="3">Admin</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-sm-3 control-label">Password</label>
+                                                                        <div class="col-sm-9" style="float:right">
+                                                                            @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @placeholder = "Password", id = "Password", @type = "password", @required = "required" })
+                                                                        </div>
+                                                                    </div>
+                                                                                    <div class="form-group row">
+                                                                                        <div class="offset-sm-3 col-sm-3">
+                                                                                            <button class="btn btn-warning" type="button" data-dismiss="modal" tabindex="0">Cancel</button>
+                                                                                        </div>
+
+                                                                                        <div class="col-sm-3">
+                                                                                            <button class="btn btn-info" id="btnSave" type="submit">Save User</button>
+                                                                                        </div>
+                                                                                    </div>}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background: #e4e7ea;border: 0px;color: #000;" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/Bootstrap4/js/User/User1.js"></script>
+<!-- Page level plugins
+
+
+
+<script src="~/Bootstrap4/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Bootstrap4/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<script src="~/Bootstrap4/js/demo/datatables-demo.js"></script>
+
+-->

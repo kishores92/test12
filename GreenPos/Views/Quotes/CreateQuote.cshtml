@@ -1,0 +1,609 @@
+﻿@using GreenPOS.Models
+@using Newtonsoft.Json
+@model QuotesViewModel
+@{ ViewData["Title"] = "Quote";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+<style>
+    .btn-space {
+        margin-left: 15px !important;
+    }
+
+    .hidden {
+        visibility: hidden;
+        display: none;
+    }
+</style>
+
+
+<link href="~/Bootstrap4/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+@*<link href="~/css/quotes-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxazxuh4hwsyylfb+j125mxis6mr5fohampbg064zb+afewh94ndvacbm8qnd" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        //        $('.quoteSelect').change(function(){
+        //    $(this).is(':checked') ? $(this).siblings('.quoteSelect').prop('disabled',true) : "";
+        //});
+
+        var $loadingDiv = $('#loadingDiv');
+        $loadingDiv.hide();
+
+        $('.quoteSelect').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelect').attr('disabled', true);
+                $(this).attr('disabled', false);
+            }
+            else {
+                $('.quoteSelect').attr('disabled', false);
+            }
+
+        });
+
+        $('.quoteSelectPackage').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelectPackage').attr('disabled', true);
+                $(this).attr('disabled', false);
+                document.getElementById('FacadeId').value = $(this).attr('value');
+            }
+            else {
+                $('.quoteSelectPackage').attr('disabled', false);
+            }
+
+        });
+        $('.quoteSelectInclusion').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelectInclusion').attr('disabled', true);
+                $(this).attr('disabled', false);
+                document.getElementById('InclusionId').value = $(this).attr('value');
+            }
+            else {
+                $('.quoteSelectInclusion').attr('disabled', false);
+            }
+
+        });
+        $('.quoteSelectDesign').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelectDesign').attr('disabled', true);
+                $(this).attr('disabled', false);
+                document.getElementById('HouseDesignId').value = $(this).attr('value');
+            }
+            else {
+                $('.quoteSelectDesign').attr('disabled', false);
+            }
+
+        });
+        $('.quoteSelectPromotion').change(function () {
+            if ($(this).is(':checked')) {
+                $('.quoteSelectPromotion').attr('disabled', true);
+                $(this).attr('disabled', false);
+            }
+            else {
+                $('.quoteSelectPromotion').attr('disabled', false);
+            }
+
+        });
+
+           $('#ajaxresult').delegate('.deleteQuote','click', function (evt) {
+               evt.preventDefault();
+                $('.SendEnquiryEmailSubmit').hide();
+                    $('.GenerateDocSubmit').hide();
+               $('#loadingDiv').attr('display', '');
+           $('#loadingDiv').show();
+             var r = confirm("Are you sure you want delete!");
+               if (r == true) {
+
+            $.ajax({
+                url: '@(Url.Action("PartialDeleteQuote", "Quotes"))',
+                type: 'POST',
+                data: $('.quoteForm').serialize() + '&deleteID=' + $(this).attr('value'),
+                success: function (response) {
+                     $('#ajaxresult').html('');
+                    $('#ajaxresult').html(response);
+                },
+                error: function (data) {
+                alert(data);
+            }
+            });
+               }
+         });
+
+          $('#ajaxresult').delegate('.GenerateDocSubmit', 'click',  function (evt) {
+              evt.preventDefault();
+                $('.SendEnquiryEmailSubmit').hide();
+                    $('.GenerateDocSubmit').hide();
+                 $('#loadingDiv').attr('display', '');
+           $('#loadingDiv').show();
+           $.ajax({
+                url: '@(Url.Action("PartialGenerateQuote", "Quotes"))',
+                type: 'POST',
+                data: $('.quoteForm').serialize(),
+                success: function (response) {
+                    $('#ajaxresult').html('');
+                    $('#ajaxresult').html(response);
+                    $('#loadingDiv').hide();
+                    $('.SendEnquiryEmailSubmit').show();
+                    $('.GenerateDocSubmit').show();
+                    $('.modal-content-lb').html('Your @Model.RequestType for @Model.Name has been generated successfully..');
+                    $('#confirmationModal').modal('show');
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                       $('#loadingDiv').hide();
+                     $('.SendEnquiryEmailSubmit').show();
+                    $('.GenerateDocSubmit').show();
+            }
+            });
+          });
+
+         $('#ajaxresult').delegate('.SendEnquiryEmailSubmit', 'click', function (evt) {
+               evt.preventDefault();
+                 $('.SendEnquiryEmailSubmit').hide();
+                    $('.GenerateDocSubmit').hide();
+                  $('#loadingDiv').attr('display', '');
+           $('#loadingDiv').show();
+              var name = $('#name').val();
+              var emailCC = $('#emailCC').val();
+            $.ajax({
+                url: '@(Url.Action("PartialEnquiryEmail", "Quotes"))',
+                type: 'POST',
+                data: $('.quoteForm').serialize() + '&emailCC=' + emailCC,
+                success: function (response) {
+                    $('#ajaxresult').html('');
+                    $('#ajaxresult').html(response);
+                    $('#loadingDiv').hide();
+                    $('.SendEnquiryEmailSubmit').show();
+                    $('.GenerateDocSubmit').show();
+                    $('.modal-content-lb').html('Your Email for @Model.Name has been sent successfully..');
+                    $('#confirmationModal').modal('show');
+                },
+            error: function(data) {
+                $('#loadingDiv').hide();
+                $('.SendEnquiryEmailSubmit').show();
+                $('.GenerateDocSubmit').show();
+                alert(data.responseText);
+            }
+            });
+        });
+
+           $('#ajaxresultVariation').delegate('.AddInclusionVariation', 'click', function (evt) {
+               evt.preventDefault();
+               //if ($('#Id').val() == 0) {
+               //    alert("Inclusion variations can only be added once the quote is saved ..");
+               //}
+               //else
+               {
+                   //var name = $('#name').val();
+                   //var emailCC = $('#emailCC').val();
+                   $.ajax({
+                       url: '@(Url.Action("PartialStandardVariation", "Quotes"))',
+                       type: 'POST',
+                       data: $('.quoteForm').serialize(),
+                       success: function (response) {
+                           $('#ajaxresultVariation').html('');
+                           $('#ajaxresultVariation').html(response);
+                           alert("inclusion added successfully..")
+                       },
+                       error: function (data) {
+                           alert("Failed. Please make sure all fields are selected and description added..");
+                       }
+                   });
+               }
+               });
+
+        $('#ajaxresultVariation').delegate('.deleteInclusion', 'click', function (evt) {
+               evt.preventDefault();
+               if ($(this).attr('value') == 0) {
+                   alert("Cannot delete selected variation ..");
+               }
+               else {
+                     var r = confirm("Are you sure you want delete!");
+                   if (r == true) {
+
+                       //var name = $('#name').val();
+                       //var emailCC = $('#emailCC').val();
+                       $.ajax({
+                           url: '@(Url.Action("PartialDeleteVariation", "Quotes"))',
+                           type: 'POST',
+                           data: $('.quoteForm').serialize() + '&deleteID=' + $(this).attr('value'),
+                           success: function (response) {
+                               $('#ajaxresultVariation').html('');
+                               $('#ajaxresultVariation').html(response);
+                               alert("inclusion deleted successfully..")
+                           },
+                           error: function (data) {
+                               alert("Failed. Uable to delete, please contact support..");
+                           }
+    });
+                   }
+               }
+        });
+
+             $('#ajaxresultVariation').delegate('.UploadCustomPdf', 'click', function (evt) {
+                 evt.preventDefault();
+                  var formData = new FormData();
+                 var file = $('#File').get(0).files[0];
+                 formData.append("pdffile", file);
+                 formData.append("quoteModel", $('.quoteForm').serialize());
+               //if ($('#Id').val() == 0) {
+               //    alert("Inclusion variations can only be added once the quote is saved ..");
+               //}
+               //else
+               {
+                   //var name = $('#name').val();
+                   //var emailCC = $('#emailCC').val();
+                   $.ajax({
+                       url: '@(Url.Action("PartialUploadCustomPdf", "Quotes"))',
+                       type: 'POST',
+                       contentType: false,
+                       data: formData,
+                       processData: false,
+                       success: function (response) {
+                           $('#ajaxresultVariation').html('');
+                           $('#ajaxresultVariation').html(response);
+                           alert("file uploaded successfully..")
+                       },
+                       error: function (data) {
+                           alert(JSON.stringify(data));
+                           alert("Failed. file type should be pdf and size less than 20M.. please try selecting different file");
+                       }
+                   });
+               }
+             });
+
+         $('#ajaxresultVariation').delegate('.deleteCustomPdf', 'click', function (evt) {
+               evt.preventDefault();
+               if ($(this).attr('value') == 0 || $(this).attr('value') == '') {
+                   alert("Cannot delete selected Pdf file ..");
+               }
+               else {
+                     var r = confirm("Are you sure you want delete!");
+                   if (r == true) {
+                       $.ajax({
+                           url: '@(Url.Action("PartialDeleteCustomPdf", "Quotes"))',
+                           type: 'POST',
+                           data: $('.quoteForm').serialize() + '&deleteID=' + $(this).attr('value'),
+                           success: function (response) {
+                               $('#ajaxresultVariation').html('');
+                               $('#ajaxresultVariation').html(response);
+                               alert("Custom Pdf deleted successfully..")
+                           },
+                           error: function (data) {
+                               alert("Failed. Uable to delete, please contact support..");
+                           }
+    });
+                   }
+               }
+        });
+
+    });
+</script>
+<div class="content-page">
+    <div class="content">
+        <!-- Start Content-->
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Quotes & Tenders</a></li>
+                                <li class="breadcrumb-item active">Create Quote</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Quote</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="col-md-12 maininner white-box">
+                        @using (Html.BeginForm("SaveQuoteAsync", "Quotes", FormMethod.Post, new { @class = "form-horizontal quoteForm" }))
+                        {
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.HouseDesignId)
+                            @Html.HiddenFor(model => model.FacadeId)
+                            @Html.HiddenFor(model => model.InclusionId)
+                            @Html.HiddenFor(model => model.IsTender)
+                            @Html.HiddenFor(model => model.RequestType)
+
+                            <div class="form-group text-right" style="margin-top:10px">
+                                <button asp-action="ConvertQuoteAsync" type="submit" class="@Model.CanConvertCss btn btn-primary">Convert To Tender</button>
+
+                                @*<a asp-action="SaveQuoteAsync"><button class="appearance-filled size-medium status-info shape-rectangle transitions pull-right btn-space;">Save</button></a>*@
+                                <button class="btn btn-success mr-1" name="BtnSaveContact" id="btnSaveContact" aria-disabled="false" tabindex="0">Save</button>
+                                <button asp-action="Index" type="submit" class="btn btn-warning">Close</button>
+                            </div>
+
+                            <div>
+                                <div>
+                                    @*<h2 style="font-weight: bold;">
+                                        <label class="col-sm-12  heading">@Model.RequestType</label>
+                                    </h2>*@
+                                </div>
+                            </div>
+                                                                                                                                            <div>
+
+                                                                                                                                                <ul class="nav nav-tabs nav-bordered">
+                                                                                                                                                    <li class="nav-item"><a data-toggle="tab" href="#home" class="overviewTab nav-link active">Overview</a></li>
+                                                                                                                                                    <li class="nav-item"><a data-toggle="tab" href="#menu1" class="menu1Tab nav-link">Home Designs</a></li>
+                                                                                                                                                    <li class="nav-item"><a data-toggle="tab" href="#menu2" class="menu2Tab nav-link">Facade</a></li>
+                                                                                                                                                    <li class="nav-item"><a data-toggle="tab" href="#menu3" class="menu3Tab nav-link">Inclusions</a></li>
+                                                                                                                                                    <li class="nav-item @Model.PackageCss"><a data-toggle="tab" href="#menu4" class="menu4Tab nav-link">Packages</a></li>
+                                                                                                                                                    <li class="nav-item @Model.PromotionCss"><a data-toggle="tab" href="#menu5" class="menu5Tab nav-link">Promotions</a></li>
+                                                                                                                                                    <li class="nav-item"><a data-toggle="tab" href="#menu6" class="menu6Tab nav-link">Add Ons/Variations</a></li>
+                                                                                                                                                    <li class="nav-item"><a data-toggle="tab" href="#menu7" class="menu7Tab nav-link">Generate and Send</a></li>
+                                                                                                                                                </ul>
+
+                                                                                                                                                <div class="tab-content">
+                                                                                                                                                    <div class="tab-pane active" id="home">
+                                                                                                                                                        <div class="row">
+                                                                                                                                                            @*<div class="form-group row col-sm-7 coloumflex">
+                                                                                                                                                                    <div class="offset-sm-3 col-sm-2">
+                                                                                                                                                                        @Html.ActionLink("Cancel", "Index", "Quotes", null, new { @class = "status-warning", @placeholder = "FirstName", id = "FirstName" })
+                                                                                                                                                                    </div>
+                                                                                                                                                                    <div class="offset-sm-5 col-sm-3">
+                                                                                                                                                                        <button class=" status-info whitespace" id="btnSaveContact" aria-disabled="false" tabindex="0">Save</button>
+                                                                                                                                                                    </div>
+                                                                                                                                                                </div>*@
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Customer First Name</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.CustomerFirstName, new { @class = "form-control", @placeholder = "First Name" })
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Customer Last Name</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.CustomerLastName, new { @class = "form-control", @placeholder = "Last Name" })
+
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Customer Email</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.CustomerEmail, new { @class = "form-control", @placeholder = "Email" })
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Customer Phone</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.CustomerContact, new { @class = "form-control", @placeholder = "Phone" })
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+
+
+
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Project Address</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.CustomerProjectAddress, new { @class = "form-control", @placeholder = "Project Address" })
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Customer Address</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.CustomerAddress, new { @class = "form-control", @placeholder = "Customer Address" })
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Status</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @*@Html.TextBoxFor(model => model.Status, new { @class = "form-control", @placeholder = "Suburb" })*@
+                                                                                                                                                                    @*<select name="RoleId" id="RoleId" class="form-control">
+                                                                                                                                                                            <option id="0" value="0">Select</option>
+                                                                                                                                                                            <option id="1" selected="selected" value="1">Draft</option>
+                                                                                                                                                                            <option id="2" value="2">Deposit Paid</option>
+                                                                                                                                                                            <option id="3" value="3">Expired</option>
+                                                                                                                                                                        </select>*@
+                                                                                                                                                                    @Html.DropDownList("Status", Model.Statuses, "Select", new { @class = "form-control" })
+
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Valid For(days)</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.ValidDays, new { @class = "form-control", @placeholder = "30" })
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Garage Hand</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.GarageHand, new { @class = "form-control", @placeholder = "Garage Hand" })
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Front Alignment</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @Html.TextBoxFor(model => model.FrontAlignment, new { @class = "form-control", @placeholder = "Front Alignment" })
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="form-group col-sm-6">
+                                                                                                                                                                <label class="col-sm-4 control-label">Notes</label>
+                                                                                                                                                                <div class="col-sm-8 float-right">
+                                                                                                                                                                    @*@Html.TextBoxFor(model => model.Status, new { @class = "form-control", @placeholder = "Suburb" })*@
+                                                                                                                                                                    <textarea class="form-control" id="Description" rows="5">
+                           </textarea>
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div id="menu1" class="tab-pane">
+                                                                                                                                                        <h3>Please select your design</h3>
+                                                                                                                                                        <div class="rph-box">
+
+
+
+                                                                                                                                                            @{ while (Model.HouseDesigns != null && Model.HouseDesigns.Any())
+                                                                                                                                                                {
+                                                                                                                                                <div class="card-deck" style="margin-top:15px;">
+                                                                                                                                                    @foreach (var item in Model.HouseDesigns.Take(4))
+                                                                                                                                                    //@for (var i = 0; i < Model.HouseDesigns.Count; i++)
+                                                                                                                                                    {
+                                                                                                                                                        //if (item.CourseID == Model.CourseID)
+                                                                                                                                                        //{
+                                                                                                                                                        //    selectedRow = "table-success";kjb
+                                                                                                                                                        //}
+                                                                                                                                <div class="card" style="width: 323px;flex:none; border: 1px solid #545f6b; margin-top: 10px">
+                                                                                                                                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 320px;">
+                                                                                                                                    <div class="card-body">
+                                                                                                                                        <h4>@item.Name</h4>
+                                                                                                                                        <h5>
+                                                                                                                                            <table>
+                                                                                                                                                <tr>
+                                                                                                                                                    <td style="padding-right:20px;padding-left:8px;"><img style="width:27px;" src="/assets/images/1.png" alt=""></td>
+                                                                                                                                                    <td style="padding-right: 20px; padding-left: 8px;"><img style="width:27px;" src="/assets/images/2.png" alt=""></td>
+                                                                                                                                                    <td style="padding-left: 4px;"><img style="width:34px;" src="/assets/images/3.png" alt=""></td>
+                                                                                                                                                </tr>
+                                                                                                                                                <tr>
+                                                                                                                                                    <td>@item.Bed Bed</td>
+                                                                                                                                                    <td>@item.Bath Bath</td>
+                                                                                                                                                    <td>@item.Parking Car</td>
+                                                                                                                                                </tr>                   
+                                                                                                                                            </table>
+                                                                                                                                            
+                                                                                                                                            @*<span><i class="fa fa-home" style="font-size:25px; color:#000; position:absolute; margin-top:2px; "></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@item.Parking m<sup>2</sup></span>*@
+                                                                                                                                        </h5>
+                                                                                                                                        @*<p class="card-text" style="font-weight:bold;font-size:18px"><small class="text-muted">Cost:  @item.DisplayPrice</small></p>*@
+                                                                                                                                        <h4 style="font-size:24px;font-weight:bold">@item.DisplayPrice</h4>
+                                                                                                                                    </div>
+                                                                                                                                    <div>
+                                                                                                                                        <input type="checkbox" class="quoteSelectDesign" id="@item.Name" checked="@item.IsSelected" value="@item.Id" style="transform: scale(1.5);margin: 10px;" />
+                                                                                                                                    </div>
+                                                                                                                                </div>}
+                                                                                                                                                </div> Model.HouseDesigns.RemoveRange(0, Model.HouseDesigns.Count < 4 ? Model.HouseDesigns.Count : 4);
+                                                                                                                                            } }
+
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div id="menu2" class="tab-pane">
+
+                                                                                                                                                        <h3>Please select your facade</h3>
+                                                                                                                                                        <div class="rph-box">
+
+                                                                                                                                                            @{ while (Model.Facades != null && Model.Facades.Any())
+                                                                                                                                                                {
+                                                                                                                                                <div class="card-deck" style="margin-top:15px;">
+                                                                                                                                                    @foreach (var item in Model.Facades.Take(4))
+                                                                                                                                                    {
+                                                                                                                                                        //if (item.CourseID == Model.CourseID)
+                                                                                                                                                        //{
+                                                                                                                                                        //    selectedRow = "table-success";kjb
+                                                                                                                                                        //}
+                                                                                                                                <div class="card" style=" width: 323px;flex:none; border:1px solid #545f6b; margin-top:10px;">
+                                                                                                                                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 320px;">
+                                                                                                                                    <div class="card-body">
+                                                                                                                                        <h4 class="card-title">@item.Name</h4>
+                                                                                                                                        <h3 style="font-size:24px;font-weight:bold">@item.DisplayPrice</h3>
+                                                                                                                                    </div>
+                                                                                                                                    <div>
+                                                                                                                                        <input type="checkbox" class="quoteSelectPackage" id="@item.Name" checked="@item.IsSelected" value="@item.Id" style="transform: scale(1.5);margin: 10px;" />
+                                                                                                                                    </div>
+                                                                                                                                </div>}
+                                                                                                                                                </div> Model.Facades.RemoveRange(0, Model.Facades.Count < 4 ? Model.Facades.Count : 4);
+                                                                                                                                            } }
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div id="menu3" class="tab-pane">
+                                                                                                                                                        <h3>Please select your Inclusions</h3>
+                                                                                                                                                        <div class="rph-box">
+                                                                                                                                                            @{ while (Model.Inclusions != null && Model.Inclusions.Any())
+                                                                                                                                                                {
+                                                                                                                                                <div class="card-deck">
+                                                                                                                                                    @foreach (var item in Model.Inclusions.Take(3))
+                                                                                                                                                    {
+                                                                                                                                                        //if (item.CourseID == Model.CourseID)
+                                                                                                                                                        //{
+                                                                                                                                                        //    selectedRow = "table-success";kjb
+                                                                                                                                                        //}
+                                                                                                                                <div class="card" style=" width: 275px;flex:none; border:1px solid #545f6b; margin-top:10px;">
+                                                                                                                                    <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 275px; height:175px;">
+                                                                                                                                    <div class="card-body">
+                                                                                                                                        <h4 class="card-title">@item.Name</h4>
+                                                                                                                                        <h3 style="font-size:24px;font-weight:bold">@item.DisplayPrice</h3>
+                                                                                                                                    </div>
+                                                                                                                                    <div>
+                                                                                                                                        <input type="checkbox" class="quoteSelectInclusion" id="@item.Name" checked="@item.IsSelected" value="@item.Id" style="transform: scale(1.5);margin: 10px;" />
+                                                                                                                                    </div>
+                                                                                                                                </div>}
+                                                                                                                                                </div> Model.Inclusions.RemoveRange(0, Model.Inclusions.Count < 3 ? Model.Inclusions.Count : 3);
+                                                                                                                                            } }
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+
+
+                                                                                                                                                    <div id="menu4" class="tab-pane">
+                                                                                                                                                        <h3>Please select your package</h3>
+                                                                                                                                                        @{ while (Model.Packages != null && Model.Packages.Any())
+                                                                                                                                                            {
+                                                                                                                                            <div class="card-deck">
+                                                                                                                                                @foreach (var item in Model.Packages.Take(3))
+                                                                                                                                                {
+                                                                                                                                                    //if (item.CourseID == Model.CourseID)
+                                                                                                                                                    //{
+                                                                                                                                                    //    selectedRow = "table-success";kjb
+                                                                                                                                                    //}
+                                                                                                                            <div class="card" style=" width: 323px;flex:none">
+                                                                                                                                <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 323px;">
+                                                                                                                                <div class="card-body">
+                                                                                                                                    <h5 class="card-title">@item.Name</h5>
+                                                                                                                                    <p class="card-text"><small class="text-muted">Cost:@item.Cost AUD </small></p>
+                                                                                                                                </div>
+                                                                                                                                <div>
+                                                                                                                                    <input type="checkbox" class="quoteSelect" id="@item.Name" style="transform: scale(1.5);margin: 10px;" />
+                                                                                                                                </div>
+                                                                                                                            </div>}
+                                                                                                                                            </div> Model.Packages.RemoveRange(0, Model.Packages.Count < 3 ? Model.Packages.Count : 3);
+                                                                                                                                        } }
+                                                                                                                                                    </div>
+                                                                                                                                                    <div id="menu5" class="tab-pane">
+                                                                                                                                                        <h3>Please select the promotion</h3>
+                                                                                                                                                        @{ while (Model.Packages != null && Model.Promotions.Any())
+                                                                                                                                                            {
+                                                                                                                                            <div class="card-deck">
+                                                                                                                                                @foreach (var item in Model.Promotions.Take(3))
+                                                                                                                                                {
+                                                                                                                                                    //if (item.CourseID == Model.CourseID)
+                                                                                                                                                    //{
+                                                                                                                                                    //    selectedRow = "table-success";kjb
+                                                                                                                                                    //}
+                                                                                                                            <div class="card" style=" width: 323px;flex:none">
+                                                                                                                                <img class="card-img-top" src="@item.ImageUrl" alt="Card image cap" style="width: 323px;">
+                                                                                                                                <div class="card-body">
+                                                                                                                                    <h5 class="card-title">@item.Name</h5>
+                                                                                                                                    <p class="card-text"><small class="text-muted">Cost:@item.Cost AUD </small></p>
+                                                                                                                                </div>
+                                                                                                                                <div>
+                                                                                                                                    <input type="checkbox" class="quoteSelectPromotion" id="@item.Name" style="transform: scale(1.5);margin: 10px;" />
+                                                                                                                                </div>
+                                                                                                                            </div>}
+                                                                                                                                            </div> Model.Promotions.RemoveRange(0, Model.Promotions.Count < 3 ? Model.Promotions.Count : 3);
+                                                                                                                                        } }
+                                                                                                                                                    </div>
+                                                                                                                                                    <div id="menu6" class="tab-pane">
+                                                                                                                                                        <div id="ajaxresultVariation">
+                                                                                                                                                            @await Html.PartialAsync("_inclusionVariationPartial", Model)
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+
+                                                                                                                                                    <div id="menu7" class="tab-pane">
+                                                                                                                                                        <div class="modal-body">
+                                                                                                                                                            <div id="ajaxresult">
+                                                                                                                                                                @await Html.PartialAsync("_quoteEmailPartial", Model)
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div>}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

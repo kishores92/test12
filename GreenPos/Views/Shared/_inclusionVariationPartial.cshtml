@@ -1,0 +1,126 @@
+﻿@model QuotesViewModel
+@using Newtonsoft.Json
+
+@if (Model.IsTender.HasValue && Model.IsTender.Value)
+{
+    @if (String.IsNullOrEmpty(Model.PdfUrl))
+    {
+    <div style="margin-bottom:85px;">
+        <h3>Upload Custom Pdf</h3>
+        <input class="form-control" type="file" name="File" id="File" asp-for="FileUpload" />
+        <button class="btn btn-primary status-info UploadCustomPdf" type="submit" style="float:left;margin-top:10px;">Upload Custom Pdf</button>
+    </div>
+    }
+    else
+    {
+        @:<div class="row" style="margin-bottom:85px;">
+            @:<div class="col-md-12">
+                <h3>Uploaded Custom Pdf</h3>
+                <br> </br>
+                <table class="table table-bordered" style="width:50%;">
+                    <thead>
+                        <tr>
+                            <th style="width:50%">File Name</th>
+                            <th style="width:50%">Actions</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="@Model.CustomPdfUrl" target="_blank">Custom Pdf - File Appends to the end of the generated Tender Pdf</a> </td>
+                            <td><a class="deleteCustomPdf" title="Delete" data-toggle="tooltip" value="@Model.PdfUrl"><i class="mdi mdi-delete" style="color:red">&#xE872;</i></a></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            @:</div>
+        @:</div>
+      
+    }
+}
+
+<h3>Variations To Standard Inclusions</h3>
+<div class="row">
+        <div class="form-group col-md-6">
+            <label class="col-md-6 control-label">Category</label>
+            <div class="col-md-12">
+                @*@Html.TextBoxFor(model => model.Status, new { @class = "form-control", @placeholder = "Suburb" })*@
+                @*@Html.TextBoxFor(model => model.SupervisorContact, new { @class = "form-control", @placeholder = "Garage Hand" })*@
+                <select name="VariationCategory" id="VariationCategory" class="form-control">
+                    <option id="0" selected="selected" value="">Select</option>
+                    <option id="1" value="Add Ons/Variations To Standard Inclusions">Add Ons/Variations To Standard Inclusions</option>
+                    <option id="3" value="Provisional Allowances">Provisional Allowances</option>
+                    <option id="4" value="Additional Estate / Developer Requirements">Additional Estate / Developer Requirements</option>
+                    <option id="5" value="Promotional Offers">Promotional Offers</option>
+                    <option id="6" value="Miscellaneous">Miscellaneous</option>
+
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">Sub Category</label>
+            <div class="col-sm-9">
+                @*@Html.TextBoxFor(model => model.Status, new { @class = "form-control", @placeholder = "Suburb" })*@
+                @*@Html.TextBoxFor(model => model.SupervisorContact, new { @class = "form-control", @placeholder = "Front Alignment" })*@
+                <select name="SubCategoryId" id="SubCategoryId" class="form-control">
+                    <option id="0" selected="selected" value="">Select</option>
+                    <option id="1" value="Structural">Structural</option>
+                    <option id="2" value="External">External</option>
+                    <option id="3" value="Internal">Internal</option>
+                    <option id="4" value="Kitchen">Kitchen</option>
+                    <option id="5" value="Bathroom Ensuite">Bathroom Ensuite</option>
+                    <option id="6" value="Laundry">Laundry</option>
+                    <option id="7" value="Miscellaneous">Miscellaneous</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-3 control-label">Variation</label>
+            <div class="col-md-12">
+                @*@Html.TextBoxFor(model => model.Status, new { @class = "form-control", @placeholder = "Suburb" })*@
+                <textarea class="form-control" id="VariationDescription" name="VariationDescription" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="form-group col-sm-3">
+            <label class="col-sm-3 control-label">Cost($)</label>
+            <div class="col-sm-9">
+                @*@Html.TextBoxFor(model => model.Status, new { @class = "form-control", @placeholder = "Suburb" })*@
+                <input class="form-control" id="CostVariation" name="CostVariation" placeholder="Cost" type="text">
+            </div>
+        </div>
+        <div class="form-group col-sm-1">
+            <button class="btn btn-primary status-info AddInclusionVariation" type="button" name="InclusionVariation" style="margin-top:10px;margin-left:20px;">
+                Add
+            </button>
+        </div>
+
+        <div class="form-group col-md-12">
+            <table class="table table-bordered" style="width:100;">
+                <thead>
+                    <tr>
+                        <th style="width:20%">Category</th>
+                        <th style="width:20%">Sub Category</th>
+                        <th style="width:10%">Cost($)</th>
+                        <th style="width:60%">Description</th>
+                        <th style="width:10%">Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AdditionalInclusions)
+                    {
+
+                        <tr>
+                            <td>@item.Category</td>
+                            <td>@item.SubCategory</td>
+                            <td>@item.Cost</td>
+                            <td style="white-space:pre-wrap; word-wrap:break-word">@item.Description</td>
+                            <td><a class="deleteInclusion" title="Delete" data-toggle="tooltip" value="@item.Id"><i class="mdi mdi-delete" style="color:red">&#xE872;</i></a></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    
+</div>

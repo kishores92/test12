@@ -1,0 +1,75 @@
+﻿@using GreenPOS.Models
+
+@model ContactViewModel
+
+<link href="~/Bootstrap4/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<div class="row">
+    <div class="col-md-12 maininner">
+        <div class="white-box">
+            <div class="admin-box col-sm-12">
+                <div class="row">
+                    <h2 class="col-sm-4 d-flex">
+                        <input type="text" placeholder="Search..." class="form-control searchbox">
+                        <a href="" class="active serchicon">
+                            <i class="fas fa-search px-1" style="font-size:1.3rem;"></i>
+                        </a>
+                    </h2>
+                    <div class="col-sm-8">
+                        <a asp-action="CreateContact" class="btn btn-success float-right">
+                            Create
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th width="20%">Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Action</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th width="20%">Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (ContactViewModel item in ViewBag.contacts)
+                    {
+                        <tr>
+                            <td>
+                                <a class="editContact" title="Edit" data-toggle="tooltip" href="/Contact/GetContactAsync/@item.Id"><i class="fas fa-edit" style="color:#FFC107; font-size: 0.9rem;"></i></a>
+                                <a onclick="return confirm('Are you sure you want to delete?');" data-toggle="tooltip" href="/Contact/DeleteContactAsync/@item.Id" title="Delete"><i class="fas fa-trash" style="color:#E34724; font-size: 0.9rem;"></i></a>
+                                <a class="createContact" style="float:right" title="Create Quote" data-toggle="tooltip" href="/Quotes/CreateQuoteForContactAsync/@item.Id">Create Quote</a>
+                            </td>
+                            <td>@item.FirstName</td>
+                            <td>@item.LastName</td>
+                            <td width="20%">@item.Email</td>
+                            <td>@item.Phone</td>
+
+
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@*<script src="~/js/Contact/Contact.js"></script>*@

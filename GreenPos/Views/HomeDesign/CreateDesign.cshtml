@@ -1,0 +1,288 @@
+﻿
+@{ ViewData["Title"] = "CreateDesign";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<style>
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+
+    span.btn.btn-default.btn-file {
+        color: white;
+        background-color: #6658dd;
+    }
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+    #img-upload {
+        width: 75%;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-upload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgInp").change(function () {
+            readURL(this);
+        });
+    });
+</script>
+
+<link rel="shortcut icon" href="../assets/images/favicon.ico" />
+
+<!-- Plugins css -->
+<link href="../assets/libs/mohithg-switchery/switchery.min.css"
+      rel="stylesheet"
+      type="text/css" />
+<link href="../assets/libs/multiselect/css/multi-select.css"
+      rel="stylesheet"
+      type="text/css" />
+<link href="../assets/libs/select2/css/select2.min.css"
+      rel="stylesheet"
+      type="text/css" />
+<link href="../assets/libs/selectize/css/selectize.bootstrap3.css"
+      rel="stylesheet"
+      type="text/css" />
+<link href="../assets/libs/bootstrap-select/css/bootstrap-select.min.css"
+      rel="stylesheet"
+      type="text/css" />
+<link href="../assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css"
+      rel="stylesheet"
+      type="text/css" />
+
+<!-- App css -->
+<link href="../assets/css/bootstrap.min.css"
+      rel="stylesheet"
+      type="text/css"
+      id="bs-default-stylesheet" />
+<link href="../assets/css/app.min.css"
+      rel="stylesheet"
+      type="text/css"
+      id="app-default-stylesheet" />
+
+<link href="../assets/css/bootstrap-dark.min.css"
+      rel="stylesheet"
+      type="text/css"
+      id="bs-dark-stylesheet" />
+<link href="../assets/css/app-dark.min.css"
+      rel="stylesheet"
+      type="text/css"
+      id="app-dark-stylesheet" />
+
+<!-- icons -->
+<link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+<link href="~/Bootstrap4/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Administration</a></li>
+                                <li class="breadcrumb-item active">Manage Designs</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Add Design</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    @*@using (Html.BeginForm("SaveContactAsync", "Contact", FormMethod.Post, new { @class = "form-horizontal" }))
+                        {*@
+                    <div class="row mb-2">
+                        <div class="col-sm-12 text-sm-right">
+                            <button class="btn btn-success mb-2 mr-1" id="btnSaveContact" aria-disabled="false" tabindex="0">Save</button>
+                            @Html.ActionLink("Close", "Index", "HomeDesign", null, new { @class = "btn btn-warning mb-2 mr-1", @placeholder = "FirstName", id = "FirstName" })
+                        </div>
+                        @*@Html.HiddenFor(model => model.Id)*@
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9 float-right">
+                                @*@Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "FirstName" })*@
+                                <input class="form-control" placeholder="FirstName" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Base Price</label>
+                            <div class="col-sm-9 float-right">
+                                @*@Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name" })*@
+                                <input class="form-control" data-toggle="touchspin" type="text" data-bts-prefix="$" placeholder="Base Price" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Beds</label>
+                            <div class="col-sm-9 float-right">
+                                @*@Html.TextBoxFor(model => model.City, new { @class = "form-control", @placeholder = "Street 2" })*@
+                                <select class="form-control" id="example-select">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Width</label>
+                            <div class="col-sm-9 float-right">
+                                @*@Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email" })*@
+                                <input class="form-control" data-toggle="touchspin"
+                                       type="text"
+                                       value="25" />
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Baths</label>
+                            <div class="col-sm-9 float-right">
+                                @*@Html.TextBoxFor(model => model.MailingState, new { @class = "form-control", @placeholder = "Suburb" })*@
+                                <select class="form-control" id="example-select">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Length</label>
+                            <div class="col-sm-9 float-right">
+                                @*  @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @placeholder = "Phone" })*@
+                                <input class="form-control" data-toggle="touchspin" type="text" value="25" />
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Parking</label>
+                            <div class="col-sm-9 float-right">
+                                @* @Html.TextBoxFor(model => model.MailingZip, new { @class = "form-control", @placeholder = "Postcode" })*@
+                                <select class="form-control" id="example-select">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Build Area</label>
+                            <div class="col-sm-9 float-right">
+                                @* @Html.TextBoxFor(model => model.MailingStreet, new { @class = "form-control", @placeholder = "Street 1" })*@
+                                <input class="form-control" placeholder="BuildArea" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Description</label>
+                            <div class="col-sm-9 float-right ">
+                                @*@Html.TextBoxFor(model => model.State, new { @class = "form-control", @placeholder = "State" })*@
+                                <textarea class="form-control" id="Description" rows="5"></textarea>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group col-sm-6">
+                            <label class="col-sm-3 control-label">Keywords</label>
+                            <div class="col-sm-9 float-right ">
+                                @*@Html.TextBoxFor(model => model.State, new { @class = "form-control", @placeholder = "State" })*@
+                                <input class="form-control" placeholder="e.g.view,streetname,etc" />
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Image <input type="file" id="imgInp">
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col-sm-9 float-right ">
+                                @*@Html.TextBoxFor(model => model.State, new { @class = "form-control", @placeholder = "State" })*@
+
+                                <img id='img-upload' />
+                            </div>
+                        </div>
+
+                    </div> @* @await Html.PartialAsync("_addNotePartial", Model)}*@
+                    <script src="~/lib/jquery/dist/jquery.min.js"></script> @*<script src="~/js/Contact/Contact.js"></script>*@
+                </div>
+                <!-- DataTales Example -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/vendor.min.js"></script>
+
+<script src="../assets/libs/selectize/js/standalone/selectize.min.js"></script>
+<script src="../assets/libs/mohithg-switchery/switchery.min.js"></script>
+<script src="../assets/libs/multiselect/js/jquery.multi-select.js"></script>
+<script src="../assets/libs/select2/js/select2.min.js"></script>
+<script src="../assets/libs/jquery-mockjax/jquery.mockjax.min.js"></script>
+<script src="../assets/libs/devbridge-autocomplete/jquery.autocomplete.min.js"></script>
+<script src="../assets/libs/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="../assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+<script src="../assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+
+<!-- Init js-->
+<script src="../assets/js/pages/form-advanced.init.js"></script>
+
+<!-- App js -->
+<script src="../assets/js/app.min.js"></script>

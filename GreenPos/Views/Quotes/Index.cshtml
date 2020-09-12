@@ -1,0 +1,494 @@
+﻿
+
+
+@using Newtonsoft.Json
+@model QuotesViewModel
+@{
+    ViewData["Title"] = "Manage Quotes And Tenders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<link href="../assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="../assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="../assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="../assets/libs/datatables.net-select-bs4/css//select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+
+<!-- Signup modal content -->
+<div id="quote-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-full-width">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mt-2 mb-4">
+                    <a href="#" class="text-success">
+                        <h4>Create Quote</h4>
+                    </a>
+                </div>
+                <ul class="nav nav-tabs nav-bordered">
+                    <li class="nav-item">
+                        <a href="#overviewcreate" data-toggle="tab" aria-expanded="false" class="nav-link ">
+                            Overview
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#HomeDesignscreate" data-toggle="tab" aria-expanded="true" class="nav-link active">
+                            House Designs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#Facadecreate" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Facade
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#Inclusionscreate" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Inclusions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#AddOnsVariationscreate" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Add Ons/Variations
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#GenerateAndSendcreate" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Generate And Send
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="overviewcreate">
+                        <form class="px-3" action="#">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="customerfirstname">Customer FirstName</label>
+                                    <input name="CustomerFirstName" class="form-control" type="text" id="customerfirstname" oninvalid="this.setCustomValidity('Customer First Name is required')" oninput="this.setCustomValidity('')" required placeholder="First Name">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="customerlastname">Customer LastName</label>
+                                    <input class="form-control" type="text" id="customerlastname" required oninvalid="this.setCustomValidity('Customer Last Name is required')" oninput="this.setCustomValidity('')" placeholder="Last Name">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="customeremail">Customer Email</label>
+                                    <input name="CustomerEmail" class="form-control" type="email" id="customeremail" oninvalid="this.setCustomValidity('Customer Email is required')" oninput="this.setCustomValidity('')" required placeholder="Email">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="customerphone">Customer Phone</label>
+                                    <input name="CustomerPhone" class="form-control" type="number" id="customerphone" required oninvalid="this.setCustomValidity('Customer Phone is required')" oninput="this.setCustomValidity('')" placeholder="Customer Phone">
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="projectaddress">Project Address</label>
+                                    <input name="ProjectAddress" class="form-control" type="text" id="projectaddress" oninvalid="this.setCustomValidity('Project Address is required')" oninput="this.setCustomValidity('')" required placeholder="Project Address">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="customeraddress">Customer Address</label>
+                                    <input name="CustomerAddress" class="form-control" type="text" id="customeraddress" oninvalid="this.setCustomValidity('Customer Address is required')" oninput="this.setCustomValidity('')" required placeholder="Customer Address">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="statusid">Status</label>
+                                    <select id="statusid" name="Status" oninvalid="this.setCustomValidity('Status is required')" oninput="this.setCustomValidity('')" class="form-control">
+                                        <option value="">--Select Status--</option>
+                                        <option vlaue="0">Draft</option>
+                                        <option vlaue="1">Deposit</option>
+                                        <option vlaue="2">Paid</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="customeraddress">Valid For(days)</label>
+                                    <input name="ValidForDays" class="form-control" type="text" id="validfordays" oninvalid="this.setCustomValidity('Number of Days is required')" oninput="this.setCustomValidity('')" required placeholder="30">
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="customeraddress">Garage Hand</label>
+                                    <input name="GarageHand" class="form-control" type="text" id="garagehand" required oninvalid="this.setCustomValidity('Garage Hand is required')" oninput="this.setCustomValidity('')" placeholder="Garage Hand">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="frontalignment">Front Alignment</label>
+                                    <input name="FrontAlignment" class="form-control" type="text" id="frontalignment" oninvalid="this.setCustomValidity('Front Alignment is required')" oninput="this.setCustomValidity('')" required placeholder="Front Alignment">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="notes">Notes</label>
+                                    <textarea cols="4" rows="4" name="Notes" class="form-control" type="text" id="notes" oninvalid="this.setCustomValidity('Notes is required')" oninput="this.setCustomValidity('')" required placeholder="Notes"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group text-right">
+                                <button class=" btn btn-warning col-md-2 col-lg-1" data-dismiss="modal" type="button">Close</button>
+                                &nbsp;&nbsp;
+                                <button class="btn btn-primary col-md-2 col-lg-2" type="submit">Save Quote</button>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="HomeDesignscreate">
+
+                    </div>
+                    <div class="tab-pane" id="Facadecreate">
+
+                    </div>
+                    <div class="tab-pane" id="Inclusionscreate">
+
+                    </div>
+                    <div class="tab-pane" id="AddOnsVariationscreate">
+
+                    </div>
+                    <div class="tab-pane" id="GenerateAndSendcreate">
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Update modal content -->
+<div id="update-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-full-width">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mt-2 mb-4">
+                    <a href="#" class="text-success">
+                        <h4>Update Quote</h4>
+                    </a>
+                </div>
+                <ul class="nav nav-tabs nav-bordered">
+                    <li class="nav-item">
+                        <a href="#overview" data-toggle="tab" aria-expanded="false" class="nav-link ">
+                            Overview
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#HomeDesigns" data-toggle="tab" aria-expanded="true" class="nav-link active">
+                            House Designs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#Facade" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Facade
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#Inclusions" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Inclusions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#AddOnsVariations" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Add Ons/Variations
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#GenerateAndSend" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            Generate And Send
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="overview">
+                        <form class="px-3" action="#">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="customerfirstname">Customer FirstName</label>
+                                    <input name="CustomerFirstName" class="form-control" type="text" id="customerfirstname" oninvalid="this.setCustomValidity('Customer First Name is required')" oninput="this.setCustomValidity('')" required placeholder="First Name">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="customerlastname">Customer LastName</label>
+                                    <input class="form-control" type="text" id="customerlastname" required oninvalid="this.setCustomValidity('Customer Last Name is required')" oninput="this.setCustomValidity('')" placeholder="Last Name">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="customeremail">Customer Email</label>
+                                    <input name="CustomerEmail" class="form-control" type="email" id="customeremail" oninvalid="this.setCustomValidity('Customer Email is required')" oninput="this.setCustomValidity('')" required placeholder="Email">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="customerphone">Customer Phone</label>
+                                    <input name="CustomerPhone" class="form-control" type="number" id="customerphone" required oninvalid="this.setCustomValidity('Customer Phone is required')" oninput="this.setCustomValidity('')" placeholder="Customer Phone">
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="projectaddress">Project Address</label>
+                                    <input name="ProjectAddress" class="form-control" type="text" id="projectaddress" oninvalid="this.setCustomValidity('Project Address is required')" oninput="this.setCustomValidity('')" required placeholder="Project Address">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="customeraddress">Customer Address</label>
+                                    <input name="CustomerAddress" class="form-control" type="text" id="customeraddress" oninvalid="this.setCustomValidity('Customer Address is required')" oninput="this.setCustomValidity('')" required placeholder="Customer Address">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="statusid">Status</label>
+                                    <select id="statusid" name="Status" oninvalid="this.setCustomValidity('Status is required')" oninput="this.setCustomValidity('')" class="form-control">
+                                        <option value="">--Select Status--</option>
+                                        <option vlaue="0">Draft</option>
+                                        <option vlaue="1">Deposit</option>
+                                        <option vlaue="2">Paid</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="customeraddress">Valid For(days)</label>
+                                    <input name="ValidForDays" class="form-control" type="text" id="validfordays" oninvalid="this.setCustomValidity('Number of Days is required')" oninput="this.setCustomValidity('')" required placeholder="30">
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="customeraddress">Garage Hand</label>
+                                    <input name="GarageHand" class="form-control" type="text" id="garagehand" required oninvalid="this.setCustomValidity('Garage Hand is required')" oninput="this.setCustomValidity('')" placeholder="Garage Hand">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="frontalignment">Front Alignment</label>
+                                    <input name="FrontAlignment" class="form-control" type="text" id="frontalignment" oninvalid="this.setCustomValidity('Front Alignment is required')" oninput="this.setCustomValidity('')" required placeholder="Front Alignment">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="notes">Notes</label>
+                                    <textarea cols="4" rows="4" name="Notes" class="form-control" type="text" id="notes" oninvalid="this.setCustomValidity('Notes is required')" oninput="this.setCustomValidity('')" required placeholder="Notes"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group text-right">
+                                <button class=" btn btn-warning col-md-4" data-dismiss="modal" type="button">Close</button>
+                                &nbsp;&nbsp;
+                                <button class="btn btn-primary col-md-4" type="submit">Update Quote</button>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="HomeDesigns">
+
+                    </div>
+                    <div class="tab-pane" id="Facade">
+
+                    </div>
+                    <div class="tab-pane" id="Inclusions">
+
+                    </div>
+                    <div class="tab-pane" id="AddOnsVariations">
+
+                    </div>
+                    <div class="tab-pane" id="GenerateAndSend">
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Danger Alert Modal -->
+<div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-filled bg-danger">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center">
+                    <i class="dripicons-wrong h1 text-white"></i>
+                    <h4 class="mt-2 text-white">Are you sure?</h4>
+                    <p class="mt-3 text-white">Do you really want to delete this record? This process can not be undone.</p>
+                    <button type="button" class="btn btn-light my-2" data-dismiss="modal">Continue</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Begin page -->
+<div class="content-page">
+    <div class="content">
+
+        <!-- Start Content-->
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Quotes & Tenders</a></li>
+                                @*<li class="breadcrumb-item active">View Quotes</li>*@
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Manage Quotes</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row mt-2">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="row mb-2">
+                                <div class="col-sm-4">
+                                    <a asp-action="CreateQuote"><button type="button" class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#custom-modal"><i class="mdi mdi-plus-circle mr-1"></i> Add Quotes</button></a>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="text-sm-right">
+                                        <button type="button" class="btn btn-success mb-2 mr-2"><i class="mdi mdi-cog"></i></button>
+                                        <button type="button" class="btn btn-light mb-2 mr-2">Import</button>
+                                        <button type="button" class="btn btn-light mb-2">Export</button>
+                                    </div>
+                                </div><!-- end col-->
+                            </div>
+
+                            @*<div class="row">
+                                <div class="col-12">
+                                    <div class="card">*@
+                                        <div class="table-responsive">
+                                            <table id="scroll-horizontal-datatable" class="table table-centered table-nowrap table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                                                <label class="custom-control-label" for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <th col="2">Job Number</th>
+                                                        <th col="2">Customer Name</th>
+                                                        <th col="2">Email</th>
+                                                        <th col="2">Phone</th>
+                                                        <th col="2">Project Address</th>
+                                                        <th col="2">Action</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    @foreach (var quote in ViewBag.quotes)
+                                                    {
+                                                    <tr>
+                                                        <td>
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" id="customCheck2">
+                                                                <label class="custom-control-label" for="customCheck2">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>@quote.JobNumber</td>
+                                                        <td>@quote.Name</td>
+                                                        <td>@quote.CustomerEmail</td>
+                                                        <td>@quote.CustomerContact</td>
+                                                        <td>@quote.CustomerProjectAddress</td>
+                                                        @*<td>
+            <div class="row" data-quoteid="@quote.Id">
+                <a href="/Quotes/GetQuotesAsync/@quote.Id" class="col-md-3" style="font-size:1.2rem"><i class="fe-edit-2"></i></a>
+                &nbsp;&nbsp;
+                <a href="/Quotes/DeleteQuoteAsync/@quote.Id" onclick="return confirm('are you sure you want to delete?');" class="col-md-3" style="font-size:1.2rem"> <i class="fe-delete"></i></a>
+            </div>
+        </td>*@
+
+                                                        <td>
+                                                            <div class="row" data-quoteid="@quote.Id">
+                                                                <a href="/Quotes/GetQuotesAsync/@quote.Id" class="action-icon text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                                &nbsp;&nbsp;
+                                                                <a href="/Quotes/DeleteQuoteAsync/@quote.Id" onclick="return confirm('are you sure you want to delete?');" class="action-icon text-danger"> <i class="mdi mdi-delete"></i></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>}
+
+                                                </tbody>
+                                            </table>
+
+                                        </div> <!-- end card body-->
+                                    @*</div> <!-- end card -->
+                                </div><!-- end col-->
+                            </div>*@
+
+                        </div> <!-- end card-body -->
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+    <!-- Footer Start -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    2015 -
+                    @* <script>document.write(new Date().getFullYear())</script> &copy; UBold theme by <a href="">Coderthemes</a>*@
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-right footer-links d-none d-sm-block">
+                        <a href="javascript:void(0);">About Us</a>
+                        <a href="javascript:void(0);">Help</a>
+                        <a href="javascript:void(0);">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- end Footer -->
+
+</div>
+<!-- END wrapper -->
+
+<script src="../assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="../assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+<script src="../assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+<script src="../assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="../assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="../assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="../assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="../assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+<script src="../assets/libs/pdfmake/build/pdfmake.min.js"></script>
+<script src="../assets/libs/pdfmake/build/vfs_fonts.js"></script>
+
+<script>
+    $("#scroll-horizontal-datatable").DataTable();
+</script>

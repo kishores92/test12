@@ -1,0 +1,113 @@
+﻿@model ContactViewModel
+@using Newtonsoft.Json
+
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('.SaveNoteSubmit').click(function (evt) {
+                evt.preventDefault();
+                if ($('#Id').val() == 0) {
+                    $('#notesModal').modal('hide');
+                  alert("Notes can only be added once the contact is saved ..");
+              }
+              else {
+                  $('#notesModal').modal('hide');
+                  var title = $('#NotesTitle').val();
+                  var description = $('#Description').val();
+                  $.ajax({
+                      url: '@(Url.Action("SaveNoteAsync", "Contact"))',
+                      type: 'POST',
+                      data: $('.contactForm').serialize() + '&title=' + title + '&description=' + description,
+                      success: function (response) {
+                          $('#ajaxresult').html(response);
+                      },
+                      error: function (data) {
+                          alert("Failed. Please make sure all fields are selected and both title description added..");
+                      }
+                  });
+              }
+    });
+
+    });
+</script>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="font-weight-bold text-primary" style="display:inline">Notes</h6>
+        <button class="btn btn-success btn-sm float-right" type="button" data-toggle="modal" data-target="#myModal" href="#">Add Notes</button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Desciption</th>
+                        <th>Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+             
+                <tbody>
+                    @if (Model.Notes != null && Model.Notes.Any())
+                    {
+                        foreach (NotesViewModel item in Model.Notes)
+                        {
+                            <tr>
+                                <td> <h2>@item.Description</h2></td>
+                                <td>
+                                    <span> Lead- <a href="#">@item.Title</a></span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="display:block">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="font-size: 1.3rem; display:block">Add Title/Notes</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("SaveUserAsync", "Role", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">Add Title</label>
+                        <div class="col-sm-9" style="float:right">
+                            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title", id = "Title", @required = "required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">Add Notes</label>
+                        <div class="col-sm-9" style="float:right">
+                            <textarea class="form-control" id="Description" rows="5">
+                            </textarea>
+                            @Html.HiddenFor(a => a.CurrentNote)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="offset-sm-3 col-sm-3">
+                            <button class="btn btn-info" id="btnSave" type="submit">Save</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-warning" type="button" data-dismiss="modal" tabindex="0">Cancel</button>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
